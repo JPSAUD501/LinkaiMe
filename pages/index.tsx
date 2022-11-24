@@ -1,13 +1,24 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  useEffect(() => {
+    const hostname = window.location.hostname.split('.');
+    if (hostname.length <= 1) return;
+    const subdomain = hostname.shift();
+    const domain = hostname.join('.');
+    if (!subdomain) return;
+    console.log(subdomain, domain);
+    if (subdomain.length < 4) throw window.location.hostname = domain;
+    window.location.href = window.location.href.replace(window.location.hostname, domain) + subdomain;
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
         <title>Linkai.Me</title>
-        <meta name="description" content="Welcome to Linkai.Me" />
+        <meta name="description" content='Welcome to Linkai.Me' />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
