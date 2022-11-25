@@ -1,24 +1,22 @@
 import Head from 'next/head'
-import styles from '../../styles/Home.module.css'
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import styles from '../../styles/Home.module.css'
 
 export default function User() {
   const router = useRouter();
-  const user = router.query.user?.toString();
-  if (!user) throw router.push('/');
+  const username = router.query.user?.toString();
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>{user} - Linkai.Me</title>
-        <meta name="description" content={user} />
+        <title>{`${username} | Linkai.Me`}</title>
+        <meta name="description" content={username} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to {user}&apos;s <a href="https://linkai.me">Linkai.Me!</a>
+          Welcome to {username}&apos;s <a href="https://linkai.me">Linkai.Me!</a>
         </h1>
 
         <p className={styles.description}>
