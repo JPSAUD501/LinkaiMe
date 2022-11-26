@@ -7,6 +7,7 @@ export default function Home() {
     const hostname = window.location.hostname.split('.');
     if (hostname.length <= 1) return;
     const subdomain = hostname.shift();
+    if (subdomain === 'linkai') return;
     const domain = hostname.join('.');
     if (!subdomain) return;
     console.log(subdomain, domain);
