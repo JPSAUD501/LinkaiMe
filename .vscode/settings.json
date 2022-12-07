@@ -2,6 +2,9 @@
   "cSpell.words": [
     "linkai",
     "Linkai",
-    "linkaime"
-  ]
+    "linkaime",
+    "poppins"
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
