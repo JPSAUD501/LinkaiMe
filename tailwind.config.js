@@ -12,17 +12,15 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-poppins)']
       },
-    },
-    colors: {
-      'lme': {
-        'darkblue': "#1f0441",
-        'pink': "#fc1068",
-        'orange': "#fcab10",
-        'yellow': "#f9ce07",
-        'blue': "#0ce3e8",
-      },
-      'white': "#ffffff",
-      'black': "#000000",
+      colors: {
+        'lme': {
+          'darkblue': "#1f0441",
+          'pink': "#fc1068",
+          'orange': "#fcab10",
+          'yellow': "#f9ce07",
+          'blue': "#0ce3e8",
+        }
+      }
     }
   },
   plugins: [],
