@@ -6,7 +6,7 @@ import { Suspense } from 'react'
 
 function PostOptions() {
   const searchParams = useSearchParams();
-  const content = searchParams.get("content");
+  const content = searchParams.get("content") ?? searchParams.get("text");
 
   return (
     <div className="flex gap-4 items-center flex-col sm:flex-row">
