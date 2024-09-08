@@ -20,17 +20,15 @@ function PostOptions() {
         setIsLoading(false);
         return;
       }
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-
-        const BrotliDecode = await BrotliDecodeModule;
-        const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
-        const decoded = BrotliDecode.decompress(uint8Array);
-        const decodedContent = new TextDecoder().decode(decoded);
-        
-        setDecodedContent(decodeURIComponent(decodedContent));
+      const BrotliDecode = await BrotliDecodeModule;
+      const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
+      const decoded = BrotliDecode.decompress(uint8Array);
+      const decodedContent = new TextDecoder().decode(decoded);
+      setDecodedContent(decodeURIComponent(decodedContent));
       } catch (error) {
-        setIsLoading(false);
+        console.error(error);
       }
       setIsLoading(false);
     }
@@ -51,8 +49,8 @@ function PostOptions() {
           className="invert"
           src="/x.svg"
           alt="X Logo"
-          width={20}
           height={20}
+          width={20}
         />
         On X/Twitter
       </a>
@@ -65,8 +63,8 @@ function PostOptions() {
         <Image
           src="/bluesky.svg"
           alt="Bluesky Logo"
-          width={25}
           height={25}
+          width={25}
         />
         On Bluesky
       </a>
