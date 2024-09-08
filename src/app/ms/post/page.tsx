@@ -2,17 +2,56 @@
 import Image from "next/image";
 import "./style.css"
 import { useSearchParams } from "next/navigation";
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import BrotliDecodeModule from 'brotli-dec-wasm';
 
 function PostOptions() {
   const searchParams = useSearchParams();
-  const content = searchParams.get("content") ?? searchParams.get("text");
+  const compressedContent = searchParams.get("content") ?? searchParams.get("c") ?? searchParams.get("text") ?? searchParams.get("t");
+  const [decompressedContent, setDecompressedContent] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function decompressContent() {
+      if (!compressedContent) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const BrotliDecode = await BrotliDecodeModule;
+        const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
+        const decompressed = BrotliDecode.decompress(uint8Array);
+        const decodedContent = new TextDecoder().decode(decompressed);
+        
+        setDecompressedContent(decodeURIComponent(decodedContent));
+      } catch (error) {
+        setError("Error decompressing content. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    decompressContent();
+  }, [compressedContent]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="flex gap-4 items-center flex-col sm:flex-row">
       <a
         className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-        href={`https://x.com/intent/tweet${content ? `?text=${encodeURIComponent(content)}` : ""}`}
+        href={`https://x.com/intent/tweet${decompressedContent ? `?text=${encodeURIComponent(decompressedContent)}` : ""}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -27,7 +66,7 @@ function PostOptions() {
       </a>
       <a
         className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-        href={`https://bsky.app/intent/compose${content ? `?text=${encodeURIComponent(content)}` : ""}`}
+        href={`https://bsky.app/intent/compose${decompressedContent ? `?text=${encodeURIComponent(decompressedContent)}` : ""}`}
         target="_blank"
         rel="noopener noreferrer"
       >
