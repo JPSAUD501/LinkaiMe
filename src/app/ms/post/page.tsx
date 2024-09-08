@@ -7,17 +7,22 @@ import BrotliDecodeModule from 'brotli-dec-wasm';
 
 function PostOptions() {
   const searchParams = useSearchParams();
-  const compressedContent = searchParams.get("content") ?? searchParams.get("c") ?? searchParams.get("text") ?? searchParams.get("t");
-  const [decompressedContent, setDecompressedContent] = useState("");
+  const compressedContent = searchParams.get("c") ?? searchParams.get("t");
+  const decompressedContent = searchParams.get("content") ?? searchParams.get("text");
+  const [decodedContent, setDecodedContent] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function decompressContent() {
-      if (!compressedContent) {
+      if (compressedContent === null) {
+        if (decompressedContent !== null) {
+          setDecodedContent(decompressedContent);
+        }
         setIsLoading(false);
         return;
       }
+      
 
       try {
         setIsLoading(true);
@@ -25,10 +30,10 @@ function PostOptions() {
 
         const BrotliDecode = await BrotliDecodeModule;
         const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
-        const decompressed = BrotliDecode.decompress(uint8Array);
-        const decodedContent = new TextDecoder().decode(decompressed);
+        const decoded = BrotliDecode.decompress(uint8Array);
+        const decodedContent = new TextDecoder().decode(decoded);
         
-        setDecompressedContent(decodeURIComponent(decodedContent));
+        setDecodedContent(decodeURIComponent(decodedContent));
       } catch (error) {
         setError("Error decompressing content. Please try again later.");
       } finally {
@@ -51,7 +56,7 @@ function PostOptions() {
     <div className="flex gap-4 items-center flex-col sm:flex-row">
       <a
         className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-        href={`https://x.com/intent/tweet${decompressedContent ? `?text=${encodeURIComponent(decompressedContent)}` : ""}`}
+        href={`https://x.com/intent/tweet${decodedContent ? `?text=${encodeURIComponent(decodedContent)}` : ""}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -66,7 +71,7 @@ function PostOptions() {
       </a>
       <a
         className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-        href={`https://bsky.app/intent/compose${decompressedContent ? `?text=${encodeURIComponent(decompressedContent)}` : ""}`}
+        href={`https://bsky.app/intent/compose${decodedContent ? `?text=${encodeURIComponent(decodedContent)}` : ""}`}
         target="_blank"
         rel="noopener noreferrer"
       >
