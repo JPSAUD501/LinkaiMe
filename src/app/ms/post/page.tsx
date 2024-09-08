@@ -42,7 +42,7 @@ function PostOptions() {
     }
 
     decompressContent();
-  }, [compressedContent]);
+  }, [compressedContent, decompressedContent]);
 
   if (isLoading) {
     return <div>Loading...</div>;
