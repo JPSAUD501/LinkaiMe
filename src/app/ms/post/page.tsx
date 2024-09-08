@@ -11,8 +11,6 @@ function PostOptions() {
   const decompressedContent = searchParams.get("content") ?? searchParams.get("text");
   const [decodedContent, setDecodedContent] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     async function decompressContent() {
       if (compressedContent === null) {
@@ -22,11 +20,8 @@ function PostOptions() {
         setIsLoading(false);
         return;
       }
-      
-
       try {
         setIsLoading(true);
-        setError(null);
 
         const BrotliDecode = await BrotliDecodeModule;
         const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
@@ -35,23 +30,15 @@ function PostOptions() {
         
         setDecodedContent(decodeURIComponent(decodedContent));
       } catch (error) {
-        setError("Error decompressing content. Please try again later.");
-      } finally {
         setIsLoading(false);
       }
+      setIsLoading(false);
     }
-
     decompressContent();
   }, [compressedContent, decompressedContent]);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
     <div className="flex gap-4 items-center flex-col sm:flex-row">
       <a
