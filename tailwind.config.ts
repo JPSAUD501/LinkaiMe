@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        suse: ['var(--font-suse)']
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

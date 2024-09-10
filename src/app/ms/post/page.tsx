@@ -22,11 +22,11 @@ function PostOptions() {
       }
       setIsLoading(true);
       try {
-      const BrotliDecode = await BrotliDecodeModule;
-      const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
-      const decoded = BrotliDecode.decompress(uint8Array);
-      const decodedContent = new TextDecoder().decode(decoded);
-      setDecodedContent(decodeURIComponent(decodedContent));
+        const BrotliDecode = await BrotliDecodeModule;
+        const uint8Array = Uint8Array.from(atob(compressedContent), c => c.charCodeAt(0));
+        const decoded = BrotliDecode.decompress(uint8Array);
+        const decodedContent = new TextDecoder().decode(decoded);
+        setDecodedContent(decodeURIComponent(decodedContent));
       } catch (error) {
         console.error(error);
       }
@@ -36,7 +36,7 @@ function PostOptions() {
   }, [compressedContent, decompressedContent]);
   if (isLoading) {
     return (
-      <div className="text-sm font-semibold">Decompressing...</div>
+      <div className="text-sm font-normal">Decompressing...</div>
     );
   }
   return (
@@ -76,10 +76,10 @@ function PostOptions() {
 
 export default function MsPost() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-suse">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-center">
-        <h1 className="text-3xl sm:text-4xl text-center sm:text-center">Where do you like to post this content?</h1>
-        <Suspense fallback={<div className="text-sm font-semibold">Loading...</div>}>
+        <h1 className="text-3xl sm:text-4xl text-center sm:text-center font-medium">Where do you like to post this content?</h1>
+        <Suspense fallback={<div className="text-sm font-normal">Loading...</div>}>
           <PostOptions />
         </Suspense>
       </main>
