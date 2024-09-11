@@ -36,10 +36,11 @@ export default async function middleware(req: NextRequest) {
     hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
   ) {
     return NextResponse.rewrite(
-      new URL(`/home${path === "/" ? "" : path}`, req.url),
+      new URL(`${path === "/" ? "" : path}`, req.url)
     );
   }
 
   // rewrite everything else to `/[domain]/[slug] dynamic route
-  return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
+  const newUrl = new URL(`/${hostname}${path}`, req.url);
+  return NextResponse.rewrite(newUrl);
 }
