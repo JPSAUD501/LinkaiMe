@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { subdomain: string } }
 ) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 50000); // 5 seconds timeout
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
     const linkaimeHandlePromise = fetch(`https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=${params.subdomain}`, { signal: controller.signal });
